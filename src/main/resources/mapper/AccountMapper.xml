@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AccountMapper">
+    <insert id="insertAccount">
+        INSERT INTO ACCOUNT_TBL VALUES(#{accountSerial},#{accountName},#{accountTel},#{accountType})
+    </insert>
+
+    <select id="getAccountSerialByTel" resultType="Account">
+        SELECT ACCOUNT_SERIAL FROM ACCOUNT_TBL WHERE ACCOUNT_TEL = #{accountTel}
+    </select>
+
+    <select id="findAccountBySerial" resultType="Account">
+        SELECT * FROM ACCOUNT_TBL WHERE ACCOUNT_SERIAL = #{accountSerial}
+    </select>
+</mapper>
