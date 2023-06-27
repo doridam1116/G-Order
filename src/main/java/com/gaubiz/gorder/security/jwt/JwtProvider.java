@@ -3,8 +3,13 @@ package com.gaubiz.gorder.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.gaubiz.gorder.security.auth.PrincipalDetails;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Component
@@ -21,5 +26,23 @@ public class JwtProvider {
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 
+
+    public Claims parseJwtToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(JwtProperties.SECRET)
+                .parseClaimsJws(token)
+                .getBody();
+
+        ZoneId koreaTimeZone = ZoneId.of("Asia/Seoul");
+
+        Date expirationDate = claims.getExpiration();
+        ZonedDateTime koreaExpirationDateTime = expirationDate.toInstant().atZone(koreaTimeZone);
+        Date koreaExpirationDate = Date.from(koreaExpirationDateTime.toInstant());
+
+        Claims newClaims = Jwts.claims(claims); // 새로운 클레임 객체 생성
+        newClaims.setExpiration(koreaExpirationDate); // 새로운 클레임 객체에 만료 시간 설정
+
+        return newClaims;
+    }
 
 }

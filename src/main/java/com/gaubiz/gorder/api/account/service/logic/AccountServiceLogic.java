@@ -1,8 +1,10 @@
 package com.gaubiz.gorder.api.account.service.logic;
 
 import com.gaubiz.gorder.api.account.model.Account;
+import com.gaubiz.gorder.api.account.model.Sub;
 import com.gaubiz.gorder.api.account.repository.AccountRepository;
 import com.gaubiz.gorder.api.account.service.AccountService;
+import com.gaubiz.gorder.msg.HttpStatusMsg;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +41,16 @@ public class AccountServiceLogic implements AccountService {
     public ResponseEntity<?> loginAccount(Account account) {
 //        PrincipalDetails principalDetails = principalDetailService.loadUserByUsername(user.getUserId());
         return null;
+    }
+
+    @Override
+    public ResponseEntity<?> addSub(Sub sub) {
+        int result = accountRepository.addSub(sub);
+        if(result > 0){
+            Sub subSerial = accountRepository.selectSubSerial(sub);
+            return ResponseEntity.ok().body(subSerial.getSubSerial());
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(HttpStatusMsg.HTTP_BAD_REQUEST);
+        }
     }
 }

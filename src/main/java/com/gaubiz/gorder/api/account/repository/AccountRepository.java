@@ -1,6 +1,7 @@
 package com.gaubiz.gorder.api.account.repository;
 
 import com.gaubiz.gorder.api.account.model.Account;
+import com.gaubiz.gorder.api.account.model.Sub;
 
 public interface AccountRepository {
     int registerAccount(Account account);
@@ -8,4 +9,8 @@ public interface AccountRepository {
     Account getAccountSerialByTel(Account account);
 
     Account findAccountBySerial(String accountSerial);
+
+    int addSub(Sub sub);
+
+    Sub selectSubSerial(Sub sub);
 }

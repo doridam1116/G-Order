@@ -1,7 +1,7 @@
 package com.gaubiz.gorder.api.account.model;
 
 
-import com.gaubiz.gorder.api.account.validation.Groups;
+import com.gaubiz.gorder.api.validation.Groups;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

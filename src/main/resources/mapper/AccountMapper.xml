@@ -13,4 +13,16 @@
     <select id="findAccountBySerial" resultType="Account">
         SELECT * FROM ACCOUNT_TBL WHERE ACCOUNT_SERIAL = #{accountSerial}
     </select>
+
+    <insert id="insertSub">
+        INSERT INTO SUB_TBL VALUES (#{subSerial}, default, #{accountSerial})
+    </insert>
+
+    <select id="selectSubSerial" resultType="Sub">
+        SELECT SUB_SERIAL
+        FROM SUB_TBL
+        WHERE SUB_SERIAL LIKE CONCAT('_________', #{tableNo}) AND ACCOUNT_SERIAL = #{accountSerial}
+
+    </select>
+
 </mapper>
