@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 public interface AccountService {
     ResponseEntity<?> registerAccount(Account account);
 
-    ResponseEntity<?> loginAccount(Account account);
 
     ResponseEntity<?> addSub(Sub sub);
+
+    ResponseEntity<?> deleteSubBySerial(String subSerial);
+
+    ResponseEntity<?> updateSubActive(Sub sub);
 }

@@ -3,7 +3,54 @@
 
 <mapper namespace="OrderMapper">
     <insert id="insertNewOrder">
-        INSERT INTO ORDER_TBL
+        INSERT INTO ORDER_TBL VALUES(DEFAULT, #{subSerial}, DEFAULT, DEFAULT)
     </insert>
+
+    <select id="selectOrderNoByOrder" resultType="Long">
+        SELECT ORDER_NO
+          FROM ORDER_TBL
+         WHERE SUB_SERIAL = #{subSerial} AND ROWNUM = 1
+         ORDER BY ORDER_NO DESC
+    </select>
+
+    <insert id="insertOrderDetails" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="orderDetailList" item="orderDetail">
+            INTO ORDER_DETAIL_TBL
+            VALUES (
+                    ${orderNo},
+                    ${orderDetail.productNo},
+                    ${orderDetail.orderDetailCount},
+                    'DEFAULT'
+                    )
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
+    <update id="updateOrderDetail">
+        UPDATE ORDER_DETAIL_TBL
+           SET ORDER_DETAIL_COUNT = #{orderDetailCount},
+               ORDER_STATUS = #{orderStatus}
+         WHERE ORDER_NO = #{orderNo} AND PRODUCT_NO = #{productNo}
+    </update>
+
+    <delete id="deleteOrderByNo">
+        DELETE FROM ORDER_TBL
+              WHERE ORDER_NO = #{orderNo}
+    </delete>
+
+    <select id="getOrderListByNo" resultType="OrderDetail">
+        SELECT O.PRODUCT_NO, P.PRODUCT_NAME, P.PRODUCT_PRICE, O.ORDER_DETAIL_COUNT, P.PRODUCT_PRICE * O.ORDER_DETAIL_COUNT AS TOTAL_PRICE
+        FROM PRODUCT_TBL P JOIN ORDER_DETAIL_TBL O ON P.PRODUCT_NO = O.PRODUCT_NO
+        WHERE ORDER_NO = #{orderNo}
+    </select>
+    <select id="getSalesOrder" resultType="Sales">
+        SELECT PRODUCT_NAME, SUM(ORDER_DETAIL_COUNT) AS SALES_COUNT, SUM(PRODUCT_PRICE * ORDER_DETAIL_COUNT) AS SALES_PRICE
+          FROM PRODUCT_TBL P
+          JOIN ORDER_DETAIL_TBL O ON O.PRODUCT_NO = P.PRODUCT_NO
+          JOIN ORDER_TBL OB ON O.ORDER_NO = OB.ORDER_NO
+         WHERE TRUNC(ORDER_DATE) = TRUNC(SYSDATE)
+         GROUP BY PRODUCT_NAME
+    </select>
 
 </mapper>

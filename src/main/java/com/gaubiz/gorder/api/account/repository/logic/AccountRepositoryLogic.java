@@ -38,4 +38,19 @@ public class AccountRepositoryLogic implements AccountRepository {
     public Sub selectSubSerial(Sub sub) {
         return session.selectOne("AccountMapper.selectSubSerial",sub);
     }
+
+    @Override
+    public int deleteSubBySerial(String subSerial) {
+        return session.delete("AccountMapper.deleteSubBySerial", subSerial);
+    }
+
+    @Override
+    public int updateSubActive(Sub sub) {
+        return session.update("AccountMapper.updateSubActive",sub);
+    }
+
+    @Override
+    public int insertAccountBySub(Sub sub) {
+        return session.insert("AccountMapper.insertAccountBySub",sub);
+    }
 }

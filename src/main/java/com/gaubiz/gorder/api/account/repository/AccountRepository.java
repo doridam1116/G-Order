@@ -13,4 +13,10 @@ public interface AccountRepository {
     int addSub(Sub sub);
 
     Sub selectSubSerial(Sub sub);
+
+    int deleteSubBySerial(String subSerial);
+
+    int updateSubActive(Sub sub);
+
+    int insertAccountBySub(Sub sub);
 }

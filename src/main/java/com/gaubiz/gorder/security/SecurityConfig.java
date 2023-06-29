@@ -22,10 +22,6 @@ public class SecurityConfig {
         this.jwtProvider = jwtProvider;
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {

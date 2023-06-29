@@ -15,16 +15,29 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
-    @NotBlank(groups = {Groups.loginGroup.class}, message = "{message.003}")
+    @NotBlank(
+            groups = {Groups.loginGroup.class},
+            message = "{message.003}"
+    )
     private String accountSerial;
 
-    @NotBlank(groups = {Groups.registerGroup.class}, message = "{message.001}")
+    @NotBlank(
+            groups = {Groups.registerGroup.class},
+            message = "{message.001}"
+    )
     private String accountName;
 
-    @Min(value = 0, groups = {Groups.registerGroup.class}, message = "{message.002}")
+    @Min(
+            value = 0,
+            groups = {Groups.registerGroup.class},
+            message = "{message.002}"
+    )
     private Integer accountTel;
 
-    @NotBlank(groups = {Groups.loginGroup.class, Groups.registerGroup.class}, message = "{message.004}")
+    @NotBlank(
+            groups = {Groups.loginGroup.class, Groups.registerGroup.class},
+            message = "{message.004}"
+    )
     private String accountType;
 
 }
