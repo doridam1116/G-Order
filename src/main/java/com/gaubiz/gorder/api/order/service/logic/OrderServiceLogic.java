@@ -5,7 +5,6 @@ import com.gaubiz.gorder.api.order.model.OrderDetail;
 import com.gaubiz.gorder.api.order.model.Sales;
 import com.gaubiz.gorder.api.order.repository.OrderRepository;
 import com.gaubiz.gorder.api.order.service.OrderService;
-import com.gaubiz.gorder.api.product.model.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

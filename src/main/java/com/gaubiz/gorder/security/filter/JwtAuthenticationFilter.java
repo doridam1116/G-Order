@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = extractTokenFromHeader(request);
 
-        if (isLoginRequest(request)) {
+        if (isLoginRequest(request) || request.getRequestURI().equals("/swagger-ui/*")) {
             filterChain.doFilter(request, response);
             return;
         } else if (token == null || !token.startsWith(JwtProperties.TOKEN_PREFIX)) {

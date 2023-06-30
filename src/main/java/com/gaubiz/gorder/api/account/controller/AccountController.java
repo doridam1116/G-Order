@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import static com.gaubiz.gorder.config.PropertyConfig.getMessageSource;
 
-@Api(value = "Account API")
+@Api(tags = {"계정 API"})
 @RestController
 @RequestMapping("/account")
 public class AccountController {

@@ -1,6 +1,7 @@
 package com.gaubiz.gorder.api.product.model;
 
 import com.gaubiz.gorder.api.validation.Groups;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-
+    @ApiModelProperty(value = "상품 번호",example = "1")
     @Min(
             value = 1,
             message = "{message.002}",
@@ -24,6 +25,7 @@ public class Product {
             })
     private Integer productNo;
 
+    @ApiModelProperty(value = "상품 이름",example = "닭발")
     @NotBlank(
             message = "{message.001}",
             groups = {
@@ -32,6 +34,7 @@ public class Product {
             })
     private String productName;
 
+    @ApiModelProperty(value = "상품 설명",example = "아주 매운 닭발")
     @NotBlank(
             message = "{message.007",
             groups = {
@@ -40,6 +43,7 @@ public class Product {
             })
     private String productDetail;
 
+    @ApiModelProperty(value = "상품 가격",example = "18000")
     @Min(
             value = 0,
             message = "{message.009}",
@@ -49,8 +53,10 @@ public class Product {
             })
     private int productPrice;
 
+    @ApiModelProperty(value = "상품 활성화 여부",example = "1")
     private int productActive;
 
+    @ApiModelProperty(value = "카테고리 번호",example = "4")
     @Min(
             value = 1,
             message = "{message.009}",

@@ -4,6 +4,8 @@ import com.gaubiz.gorder.api.product.model.Category;
 import com.gaubiz.gorder.api.product.model.Product;
 import com.gaubiz.gorder.api.product.service.ProductService;
 import com.gaubiz.gorder.api.validation.Groups;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Min;
 
 
+@Api(tags = {"상품 API"})
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -28,6 +31,7 @@ public class ProductController {
         int productPrice,
         int categoryNo
      */
+    @ApiOperation(value = "상품 추가")
     @PostMapping("/add")
     public ResponseEntity<?> createProduct(
             @Validated(Groups.addProductGroup.class)
@@ -45,6 +49,7 @@ public class ProductController {
         int productPrice,
         int categoryNo
      */
+    @ApiOperation(value = "상품 수정")
     @PatchMapping("/modify")
     public ResponseEntity<?> modifyProduct(
            @Validated(Groups.productModifyGroup.class)
@@ -59,6 +64,7 @@ public class ProductController {
         int productNo,
         int productActive
      */
+    @ApiOperation(value = "상품 품절 처리")
     @PatchMapping("/sold-out")
     public ResponseEntity<?> soldOutProduct(
            @Validated(Groups.soldOutGroup.class)
@@ -72,6 +78,7 @@ public class ProductController {
         param :
         int productNo
      */
+    @ApiOperation(value = "상품 삭제")
     @DeleteMapping("/delete/{productNo}")
     public ResponseEntity<?> deleteProduct(
             @PathVariable int productNo
@@ -84,6 +91,7 @@ public class ProductController {
         param :
         int categoryNo
      */
+    @ApiOperation(value = "메뉴 조회")
     @GetMapping
     public ResponseEntity<?> getMenu(
           @Min(value = 0, message = "{message.009}")
@@ -98,6 +106,7 @@ public class ProductController {
         String categoryName,
         String accountSerial
      */
+    @ApiOperation(value = "카테고리 추가")
     @PostMapping("/add/category")
     public ResponseEntity<?> addCategory(
             @Validated(Groups.addCategoryGroup.class)
@@ -115,6 +124,7 @@ public class ProductController {
         int productPrice,
         int categoryNo
      */
+    @ApiOperation(value = "카테고리 수정")
     @PatchMapping("/modify/category")
     public ResponseEntity<?> modifyCategory(
             @Validated(Groups.modifyCategoryGroup.class)
@@ -128,6 +138,7 @@ public class ProductController {
         param :
         int categoryNo
      */
+    @ApiOperation(value = "카테고리 삭제")
     @DeleteMapping("/delete/category/{categoryNo}")
     public ResponseEntity<?> deleteCategoryByNo(
             @PathVariable int categoryNo
