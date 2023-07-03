@@ -30,12 +30,9 @@ public class SecurityConfig {
         security.csrf().disable()
                 // JWT 로그인을 위한 비활성화
                 .formLogin().disable()
+                .antMatcher("/swagger-ui/index.html")
                 // JWT 인증을 위한 필터 설정
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
-
-//                .authorizeRequests();
-//                .antMatchers("/swaggr-ui/**").permitAll()
-//                .anyRequest().authenticated();
 
         return security.build();
     }

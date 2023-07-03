@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    @ApiModelProperty(value = "상품 번호",example = "1")
+    @ApiModelProperty(value = "상품 번호",example = "5")
     @Min(
             value = 1,
             message = "{message.002}",

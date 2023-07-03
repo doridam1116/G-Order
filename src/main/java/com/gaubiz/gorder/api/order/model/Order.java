@@ -24,7 +24,7 @@ public class Order {
     )
     private long orderNo;
 
-    @ApiModelProperty(value = "서브 고유번호",example = "")
+    @ApiModelProperty(value = "서브 고유번호",example = "G15881588T04")
     @NotBlank(
             message = "{message.010}",
             groups = Groups.newOrderGroup.class
@@ -41,6 +41,6 @@ public class Order {
     )
     private int orderPaymentNo;
 
-
+     @ApiModelProperty(value = "주문 상품 리스트")
     private List<OrderDetail> orderDetailList;
 }

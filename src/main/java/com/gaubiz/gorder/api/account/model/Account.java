@@ -2,6 +2,7 @@ package com.gaubiz.gorder.api.account.model;
 
 
 import com.gaubiz.gorder.api.validation.Groups;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,18 +16,30 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
+    @ApiModelProperty(
+            value = "계정 고유번호"
+            , example = "G15881581"
+    )
     @NotBlank(
             groups = {Groups.loginGroup.class},
             message = "{message.003}"
     )
     private String accountSerial;
 
+    @ApiModelProperty(
+            value = "계정명"
+            , example = "한신포차"
+    )
     @NotBlank(
             groups = {Groups.registerGroup.class},
             message = "{message.001}"
     )
     private String accountName;
 
+    @ApiModelProperty(
+            value = "계정 연락처"
+            , example = "15881581"
+    )
     @Min(
             value = 0,
             groups = {Groups.registerGroup.class},
@@ -34,6 +47,10 @@ public class Account {
     )
     private Integer accountTel;
 
+    @ApiModelProperty(
+            value = "계정 타입"
+            , example = "MASTER"
+    )
     @NotBlank(
             groups = {Groups.loginGroup.class, Groups.registerGroup.class},
             message = "{message.004}"

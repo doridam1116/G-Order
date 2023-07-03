@@ -28,8 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = extractTokenFromHeader(request);
-
-        if (isLoginRequest(request) || request.getRequestURI().equals("/swagger-ui/*")) {
+        String a = request.getRequestURI();
+        if (isLoginRequest(request) || request.getRequestURI().equals("/swagger-ui/index.html")) {
             filterChain.doFilter(request, response);
             return;
         } else if (token == null || !token.startsWith(JwtProperties.TOKEN_PREFIX)) {
@@ -70,8 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isLoginRequest(HttpServletRequest request) {
-//        return request.getRequestURI().equals("/account/login") || request.getRequestURI().equals("/account/register") && request.getMethod().equals(HttpMethod.POST.name());
-        return true;
+        return request.getRequestURI().equals("/account/login") || request.getRequestURI().equals("/account/register") && request.getMethod().equals(HttpMethod.POST.name());
+//        return true
     }
 
     private void handleAuthenticationError(HttpServletResponse response) throws IOException {

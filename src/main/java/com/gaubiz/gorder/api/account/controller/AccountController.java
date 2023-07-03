@@ -8,8 +8,7 @@ import com.gaubiz.gorder.security.auth.PrincipalDetailService;
 import com.gaubiz.gorder.security.auth.PrincipalDetails;
 import com.gaubiz.gorder.security.jwt.JwtProperties;
 import com.gaubiz.gorder.security.jwt.JwtProvider;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -40,8 +39,13 @@ public class AccountController {
         int accountTel,
         String accountType
      */
-    @ApiOperation(value = "가입")
     @PostMapping("/register")
+    @ApiOperation(
+            value = "가입"
+            , notes = "신규 가입을 진행한다."
+            , produces = "application/json"
+            , response = Account.class
+    )
     public ResponseEntity<?> registerAccount(
             @Validated(
                     Groups.registerGroup.class
@@ -110,6 +114,11 @@ public class AccountController {
     @ApiOperation(value = "서브 삭제")
     @DeleteMapping("/delete/{subSerial}")
     public ResponseEntity<?> deleteSub(
+            @ApiParam(
+                    value = "서브 시리얼"
+                    , required = true
+                    , type = "string"
+            )
             @PathVariable String subSerial
     ){
         return accountService.deleteSubBySerial(subSerial);
