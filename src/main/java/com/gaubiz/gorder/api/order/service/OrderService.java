@@ -13,5 +13,11 @@ public interface OrderService {
 
     ResponseEntity<?> getOrderByNo(long orderNo);
 
-    ResponseEntity<?> getSalesOrder();
+    ResponseEntity<?> getSalesOrder(String accountSerial);
+
+    ResponseEntity<?> getOrderBySubSerial(String subSerial);
+
+    ResponseEntity<?> getOrderByAccountSerial(String accountSerial);
+
+    ResponseEntity<?> getOrderByOrderNo(Long orderNo);
 }

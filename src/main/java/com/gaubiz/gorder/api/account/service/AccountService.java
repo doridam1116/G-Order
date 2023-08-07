@@ -13,4 +13,8 @@ public interface AccountService {
     ResponseEntity<?> deleteSubBySerial(String subSerial);
 
     ResponseEntity<?> updateSubActive(Sub sub);
+
+    ResponseEntity<?> readSub(String accountSerial);
+
+    ResponseEntity<?> updateSub(Sub sub);
 }

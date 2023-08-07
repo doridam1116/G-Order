@@ -2,35 +2,115 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="OrderMapper">
+
     <insert id="insertNewOrder">
-        INSERT INTO ORDER_TBL VALUES(DEFAULT, #{subSerial}, DEFAULT, DEFAULT)
+        INSERT INTO ORDER_TBL
+             VALUES (
+                     DEFAULT,
+                     #{subSerial},
+                     DEFAULT,
+                     DEFAULT
+                     )
     </insert>
 
-    <select id="selectOrderNoByOrder" resultType="Long">
-        SELECT ORDER_NO
+    <select id="selectOrderListByAccountSerial" resultType="Order">
+        SELECT
+            OT.ORDER_NO,
+            OT.SUB_SERIAL,
+            OT.ORDER_DATE,
+            OT.ORDER_PAYMENT_NO,
+            SUM(PDT.PRODUCT_PRICE * ODT.ORDER_DETAIL_COUNT) AS TOTAL_PRICE
+        FROM
+            ORDER_TBL OT
+                JOIN
+            SUB_TBL SUB ON OT.SUB_SERIAL = SUB.SUB_SERIAL
+                JOIN
+            ORDER_DETAIL_TBL ODT ON OT.ORDER_NO = ODT.ORDER_NO
+                JOIN
+            PRODUCT_TBL PDT ON PDT.PRODUCT_NO = ODT.PRODUCT_NO
+        WHERE
+            SUB.ACCOUNT_SERIAL = #{accountSerial}
+        GROUP BY
+            OT.ORDER_NO,
+            OT.SUB_SERIAL,
+            OT.ORDER_DATE,
+            OT.ORDER_PAYMENT_NO
+        ORDER BY OT.ORDER_DATE DESC
+    </select>
+
+    <select id="selectOrderByOrderNo" resultType="OrderDetail">
+        SELECT PT.PRODUCT_NO, PT.PRODUCT_NAME, ODT.ORDER_DETAIL_COUNT, ODT.ORDER_NO, PT.PRODUCT_PRICE * ODT.ORDER_DETAIL_COUNT AS PRICE
+          FROM ORDER_DETAIL_TBL ODT
+          JOIN PRODUCT_TBL PT on ODT.PRODUCT_NO = PT.PRODUCT_NO
+         WHERE ORDER_NO = #{orderNo}
+    </select>
+
+    <select id="selectOrderNoByOrder" resultType="Order">
+        SELECT ORDER_NO, ORDER_PAYMENT_NO
           FROM ORDER_TBL
          WHERE SUB_SERIAL = #{subSerial} AND ROWNUM = 1
-         ORDER BY ORDER_NO DESC
+        ORDER BY ORDER_NO DESC
     </select>
 
     <insert id="insertOrderDetails" parameterType="java.util.List">
         INSERT ALL
-        <foreach collection="orderDetailList" item="orderDetail">
+        <foreach collection="orderDetailList" item="orderDetail" >
             INTO ORDER_DETAIL_TBL
+                (
+                    ORDER_NO,
+                    PRODUCT_NO,
+                    ORDER_DETAIL_COUNT
+                )
             VALUES (
                     ${orderNo},
                     ${orderDetail.productNo},
-                    ${orderDetail.orderDetailCount},
-                    'DEFAULT'
+                    ${orderDetail.orderDetailCount}
                     )
         </foreach>
         SELECT * FROM DUAL
     </insert>
 
+    <select id="getOrderBySubSerial" resultType="OrderList">
+      SELECT PRO.PRODUCT_NO, PRO.PRODUCT_NAME, PRO.PRODUCT_PRICE, ODT.ORDER_DETAIL_COUNT, ODT.ORDER_DETAIL_COUNT * PRO.PRODUCT_PRICE AS PRICE
+        FROM ORDER_TBL
+        JOIN ORDER_DETAIL_TBL ODT
+          ON ORDER_TBL.ORDER_NO = ODT.ORDER_NO
+        JOIN PRODUCT_TBL PRO
+          ON ODT.PRODUCT_NO = PRO.PRODUCT_NO
+       WHERE SUB_SERIAL = #{subSerial}
+         AND ORDER_PAYMENT_NO IS NULL
+    </select>
+
+    <select id="selectOrderNoBySerial" resultType="_long">
+        SELECT ORDER_NO
+          FROM ORDER_TBL
+         WHERE SUB_SERIAL = #{subSerial} AND ORDER_PAYMENT_NO IS NULL
+    </select>
+
+    <insert id="insertAddOrder">
+        INSERT INTO ORDER_DETAIL_TBL
+                    (
+                        ORDER_NO,
+                        PRODUCT_NO,
+                        ORDER_DETAIL_COUNT
+                    )
+            VALUES (
+                       ${orderNo},
+                       ${productNo},
+                       ${orderDetailCount}
+                   )
+    </insert>
+
+    <update id="updateOrderList">
+            UPDATE ORDER_DETAIL_TBL
+               SET ORDER_DETAIL_COUNT = ORDER_DETAIL_COUNT + #{orderDetailCount}
+             WHERE ORDER_NO = #{orderNo} AND PRODUCT_NO = #{productNo}
+    </update>
+
+
     <update id="updateOrderDetail">
         UPDATE ORDER_DETAIL_TBL
-           SET ORDER_DETAIL_COUNT = #{orderDetailCount},
-               ORDER_STATUS = #{orderStatus}
+           SET ORDER_DETAIL_COUNT = #{orderDetailCount}
          WHERE ORDER_NO = #{orderNo} AND PRODUCT_NO = #{productNo}
     </update>
 
@@ -40,18 +120,35 @@
     </delete>
 
     <select id="getOrderListByNo" resultType="OrderDetail">
-        SELECT O.PRODUCT_NO, P.PRODUCT_NAME, P.PRODUCT_PRICE, O.ORDER_DETAIL_COUNT, P.PRODUCT_PRICE * O.ORDER_DETAIL_COUNT AS TOTAL_PRICE
-        FROM PRODUCT_TBL P JOIN ORDER_DETAIL_TBL O ON P.PRODUCT_NO = O.PRODUCT_NO
-        WHERE ORDER_NO = #{orderNo}
+        SELECT PRO.PRODUCT_NAME, ORDER_DETAIL_COUNT, ORDER_DETAIL_COUNT * PRODUCT_PRICE AS PRICE
+          FROM ORDER_DETAIL_TBL ODT
+          JOIN PRODUCT_TBL PRO ON ODT.PRODUCT_NO = PRO.PRODUCT_NO
+         WHERE ODT.ORDER_NO = #{orderNo}
     </select>
 
-    <select id="getSalesOrder" resultType="Sales">
-        SELECT PRODUCT_NAME, SUM(ORDER_DETAIL_COUNT) AS SALES_COUNT, SUM(PRODUCT_PRICE * ORDER_DETAIL_COUNT) AS SALES_PRICE
-          FROM PRODUCT_TBL P
-          JOIN ORDER_DETAIL_TBL O ON O.PRODUCT_NO = P.PRODUCT_NO
-          JOIN ORDER_TBL OB ON O.ORDER_NO = OB.ORDER_NO
-         WHERE TRUNC(ORDER_DATE) = TRUNC(SYSDATE)
-         GROUP BY PRODUCT_NAME
+    <select id="getSalesOrder" resultType="Order">
+        SELECT
+            OT.ORDER_NO,
+            OT.SUB_SERIAL,
+            OT.ORDER_DATE,
+            OT.ORDER_PAYMENT_NO,
+            SUM(PDT.PRODUCT_PRICE * ODT.ORDER_DETAIL_COUNT) AS TOTAL_PRICE
+        FROM
+            ORDER_TBL OT
+                JOIN
+            SUB_TBL SUB ON OT.SUB_SERIAL = SUB.SUB_SERIAL
+                JOIN
+            ORDER_DETAIL_TBL ODT ON OT.ORDER_NO = ODT.ORDER_NO
+                JOIN
+            PRODUCT_TBL PDT ON PDT.PRODUCT_NO = ODT.PRODUCT_NO
+        WHERE
+            SUB.ACCOUNT_SERIAL = #{accountSerial} AND TRUNC(ORDER_DATE) = TRUNC(SYSDATE)
+        GROUP BY
+            OT.ORDER_NO,
+            OT.SUB_SERIAL,
+            OT.ORDER_DATE,
+            OT.ORDER_PAYMENT_NO
+        ORDER BY OT.ORDER_DATE DESC
     </select>
 
 </mapper>

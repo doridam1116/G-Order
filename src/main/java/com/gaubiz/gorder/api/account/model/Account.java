@@ -21,7 +21,9 @@ public class Account {
             , example = "G15881581"
     )
     @NotBlank(
-            groups = {Groups.loginGroup.class},
+            groups = {
+                    Groups.loginGroup.class
+            },
             message = "{message.003}"
     )
     private String accountSerial;
@@ -31,7 +33,9 @@ public class Account {
             , example = "한신포차"
     )
     @NotBlank(
-            groups = {Groups.registerGroup.class},
+            groups = {
+                    Groups.registerGroup.class
+            },
             message = "{message.001}"
     )
     private String accountName;
@@ -42,17 +46,21 @@ public class Account {
     )
     @Min(
             value = 0,
-            groups = {Groups.registerGroup.class},
-            message = "{message.002}"
+            groups = {
+                    Groups.registerGroup.class
+            },
+            message = "{message.015}"
     )
-    private Integer accountTel;
+    private int accountTel;
 
     @ApiModelProperty(
             value = "계정 타입"
             , example = "MASTER"
     )
     @NotBlank(
-            groups = {Groups.loginGroup.class, Groups.registerGroup.class},
+            groups = {
+                    Groups.loginGroup.class
+            },
             message = "{message.004}"
     )
     private String accountType;

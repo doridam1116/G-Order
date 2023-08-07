@@ -11,7 +11,7 @@
     </select>
 
     <select id="findAccountBySerial" resultType="Account">
-        SELECT * FROM ACCOUNT_TBL WHERE ACCOUNT_SERIAL = #{accountSerial}
+        SELECT * FROM ACCOUNT_TBL WHERE ACCOUNT_SERIAL = #{accountSerial} AND ACCOUNT_TYPE = #{accountType}
     </select>
 
     <insert id="insertSub">
@@ -26,7 +26,6 @@
         SELECT SUB_SERIAL, A.ACCOUNT_SERIAL, A.ACCOUNT_NAME, A.ACCOUNT_TEL
         FROM SUB_TBL S JOIN ACCOUNT_TBL A ON S.ACCOUNT_SERIAL = A.ACCOUNT_SERIAL
         WHERE SUB_SERIAL LIKE CONCAT('_________', #{tableNo})
-
     </select>
 
     <delete id="deleteSubBySerial">
@@ -43,4 +42,16 @@
         </if>
         WHERE SUB_SERIAL = #{subSerial}
     </update>
+
+    <update id="updateSub">
+        UPDATE SUB_TBL
+           SET SUB_SERIAL = #{newSubSerial}
+         WHERE SUB_SERIAL = #{subSerial} AND ACCOUNT_SERIAL = #{accountSerial}
+    </update>
+
+    <select id="selectSubByAccountSerial" resultType="Sub">
+        SELECT *
+          FROM SUB_TBL
+         WHERE ACCOUNT_SERIAL = #{accountSerial}
+    </select>
 </mapper>

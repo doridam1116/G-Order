@@ -70,8 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isLoginRequest(HttpServletRequest request) {
-        return request.getRequestURI().equals("/account/login") || request.getRequestURI().equals("/account/register") && request.getMethod().equals(HttpMethod.POST.name());
-//        return true
+//        return request.getRequestURI().equals("/account/login") || request.getRequestURI().equals("/account/register") && request.getMethod().equals(HttpMethod.POST.name());
+        return true;
     }
 
     private void handleAuthenticationError(HttpServletResponse response) throws IOException {

@@ -42,8 +42,8 @@ public class ProductRepositoryLogic implements ProductRepository {
     }
 
     @Override
-    public List<Product> getMenuByCategoryNo(int categoryNo) {
-        return session.selectList("ProductMapper.selectMenuByCategoryNo",categoryNo);
+    public List<Product> getMenuByAccountSerial(String accountSerial) {
+        return session.selectList("ProductMapper.selectMenuByAccountSerial",accountSerial);
     }
 
     @Override
@@ -54,5 +54,10 @@ public class ProductRepositoryLogic implements ProductRepository {
     @Override
     public int deleteCategoryByNo(int categoryNo) {
         return session.delete("ProductMapper.deleteCategoryByNo",categoryNo);
+    }
+
+    @Override
+    public List<Category> getCategoryByAccountSerial(String accountSerial) {
+        return session.selectList("ProductMapper.selectCategoryByAccountSerial",accountSerial);
     }
 }

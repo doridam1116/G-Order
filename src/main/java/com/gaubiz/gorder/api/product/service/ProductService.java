@@ -15,9 +15,11 @@ public interface ProductService {
 
     ResponseEntity<?> deleteProductByNo(int productNo);
 
-    ResponseEntity<?> getMenuByCategoryNo(int categoryNo);
+    ResponseEntity<?> getMenuByAccountSerial(String accountSerial);
 
     ResponseEntity<?> modifyCategory(Category category);
 
     ResponseEntity<?> deleteCategoryByNo(int categoryNo);
+
+    ResponseEntity<?> getCategoryByAccountSerial(String accountSerial);
 }

@@ -22,7 +22,7 @@ public class Order {
             value = 0,
             message = "{message.009}"
     )
-    private long orderNo;
+    private Long orderNo;
 
     @ApiModelProperty(value = "서브 고유번호",example = "G15881588T04")
     @NotBlank(
@@ -39,8 +39,10 @@ public class Order {
             value = 0,
             message = "{message.009}"
     )
-    private int orderPaymentNo;
+    private Long orderPaymentNo;
 
      @ApiModelProperty(value = "주문 상품 리스트")
     private List<OrderDetail> orderDetailList;
+
+     private int totalPrice;
 }

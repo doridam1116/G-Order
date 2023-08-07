@@ -32,7 +32,7 @@ public class OrderController {
     @ApiOperation(value = "주문 생성")
     @PostMapping("/new")
     public ResponseEntity<?> newOrder(
-            @Validated(Groups.newOrderGroup.class)
+//            @Validated(Groups.newOrderGroup.class)
             @RequestBody Order order
     ){
         return orderService.createNewOrder(order);
@@ -68,6 +68,22 @@ public class OrderController {
         return orderService.deleteOrderByNo(orderNo);
     }
 
+    @ApiOperation(value = "모든 주문 조회")
+    @GetMapping("/all")
+    public ResponseEntity<?> getOrderByAll(
+            @ApiParam(value = "계정 시리얼")
+            @RequestParam String accountSerial
+    ){
+        return orderService.getOrderByAccountSerial(accountSerial);
+    }
+
+    @ApiOperation(value = "주문 조회/erp")
+    @GetMapping("/getorder")
+    public ResponseEntity<?> getOrderByOrderNo(
+            @RequestParam Long orderNo
+    ){
+        return orderService.getOrderByOrderNo(orderNo);
+    }
 
     /*
         param :
@@ -75,11 +91,11 @@ public class OrderController {
      */
     @ApiOperation(value = "주문 조회")
     @GetMapping
-    public ResponseEntity<?> getOrderByNo(
+    public ResponseEntity<?> getOrderBySubSerial(
             @ApiParam(value = "주문 번호")
-            @RequestParam long orderNo
+            @RequestParam String subSerial
     ){
-        return orderService.getOrderByNo(orderNo);
+        return orderService.getOrderBySubSerial(subSerial);
     }
 
 
@@ -88,8 +104,10 @@ public class OrderController {
      */
     @ApiOperation(value = "당일 매출 조회")
     @GetMapping("/sales")
-    public ResponseEntity<?> getSalesOrder(){
-        return orderService.getSalesOrder();
+    public ResponseEntity<?> getSalesOrder(
+            @RequestParam String accountSerial
+    ){
+        return orderService.getSalesOrder(accountSerial);
     }
 
 }

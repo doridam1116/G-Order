@@ -2,7 +2,7 @@ package com.gaubiz.gorder.api.order.repository.logic;
 
 import com.gaubiz.gorder.api.order.model.Order;
 import com.gaubiz.gorder.api.order.model.OrderDetail;
-import com.gaubiz.gorder.api.order.model.Sales;
+import com.gaubiz.gorder.api.order.model.OrderList;
 import com.gaubiz.gorder.api.order.repository.OrderRepository;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -56,8 +56,39 @@ public class OrderRepositoryLogic implements OrderRepository {
     }
 
     @Override
-    public List<Sales> getSalesOrder() {
-        return session.selectList("OrderMapper.getSalesOrder");
+    public List<Order> getSalesOrder(String accountSerial) {
+        return session.selectList("OrderMapper.getSalesOrder",accountSerial);
+    }
+
+    @Override
+    public List<OrderList> getOrderListBySubSerial(String subSerial) {
+        return session.selectList("OrderMapper.getOrderBySubSerial",subSerial);
+    }
+
+    @Override
+    public Order selectOrderBySubSerial(String subSerial) {
+        
+        return session.selectOne("OrderMapper.selectOrderNoByOrder", subSerial);
+    }
+
+    @Override
+    public int updateOrderDetail(OrderDetail order) {
+        return session.update("OrderMapper.updateOrderList",order);
+    }
+
+    @Override
+    public void insertAddOrder(OrderDetail orderDetails) {
+        session.insert("OrderMapper.insertAddOrder",orderDetails);
+    }
+
+    @Override
+    public List<Order> getOrderListByAccountSerial(String accountSerial) {
+        return session.selectList("OrderMapper.selectOrderListByAccountSerial",accountSerial);
+    }
+
+    @Override
+    public List<OrderDetail> selectOrderByOrderNo(Long orderNo) {
+        return session.selectList("OrderMapper.selectOrderByOrderNo",orderNo);
     }
 
 }

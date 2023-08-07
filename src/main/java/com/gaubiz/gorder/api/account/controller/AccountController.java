@@ -9,6 +9,7 @@ import com.gaubiz.gorder.security.auth.PrincipalDetails;
 import com.gaubiz.gorder.security.jwt.JwtProperties;
 import com.gaubiz.gorder.security.jwt.JwtProvider;
 import io.swagger.annotations.*;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,8 @@ public class AccountController {
         this.accountService = accountService;
         this.principalDetailService = principalDetailService;
     }
+
+
 
     /*
         param :
@@ -70,7 +73,7 @@ public class AccountController {
             @RequestBody Account account
             , HttpServletResponse response
     ) {
-        PrincipalDetails principalDetails = principalDetailService.loadUserByUsername(account.getAccountSerial());
+        PrincipalDetails principalDetails = principalDetailService.loadUserByUsername(account);
 
         if (principalDetails != null) {
             // 로그인 성공시
@@ -106,6 +109,17 @@ public class AccountController {
         return accountService.addSub(sub);
     }
 
+    /*
+    param :
+    String accountSeral
+ */
+    @GetMapping("/sub")
+    public ResponseEntity<?> readSub(
+            @RequestParam String accountSerial
+    ){
+        return accountService.readSub(accountSerial);
+    }
+
 
     /*
         param :
@@ -137,5 +151,19 @@ public class AccountController {
         @RequestBody Sub sub
     ){
         return accountService.updateSubActive(sub);
+    }
+
+    /*
+        param :
+        string subSerial,
+        string accountSerial
+     */
+    @ApiOperation(value = "서브 수정")
+    @PutMapping("/sub/modify")
+    public ResponseEntity<?> subModify(
+            @Validated(Groups.subModifyGroup.class)
+            @RequestBody Sub sub
+    ){
+        return accountService.updateSub(sub);
     }
 }

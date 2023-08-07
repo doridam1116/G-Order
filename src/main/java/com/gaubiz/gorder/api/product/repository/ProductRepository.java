@@ -16,9 +16,11 @@ public interface ProductRepository {
 
     int deleteProductNo(int productNo);
 
-    List<Product> getMenuByCategoryNo(int categoryNo);
+    List<Product> getMenuByAccountSerial(String accountSerial);
 
     int modifyCategory(Category category);
 
     int deleteCategoryByNo(int categoryNo);
+
+    List<Category> getCategoryByAccountSerial(String accountSerial);
 }

@@ -38,8 +38,8 @@ public class OrderDetail {
     @ApiModelProperty(value = "상품 가격", example = "18000")
     private int productPrice;
 
-    @ApiModelProperty(value = "총 판매액", example = "56000")
-    private int totalPrice;
+    @ApiModelProperty(value = "가격", example = "56000")
+    private int price;
 
     @ApiModelProperty(value = "주문 량", example = "3")
     @Min(
@@ -51,8 +51,7 @@ public class OrderDetail {
 
     @ApiModelProperty(value = "주문 상태", example = "주문 접수")
     @NotBlank(
-            message = "{message.012}",
-            groups = Groups.modifyOrderGroup.class
+            message = "{message.012}"
     )
     private String orderStatus;
 }

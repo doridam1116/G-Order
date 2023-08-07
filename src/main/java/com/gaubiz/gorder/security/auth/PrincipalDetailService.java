@@ -2,7 +2,9 @@ package com.gaubiz.gorder.security.auth;
 
 import com.gaubiz.gorder.api.account.model.Account;
 import com.gaubiz.gorder.api.account.repository.AccountRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,14 +17,19 @@ public class PrincipalDetailService implements UserDetailsService {
     }
 
 
-    @Override
-    public PrincipalDetails loadUserByUsername(String accountSerial) {
+
+    public PrincipalDetails loadUserByUsername(Account account) {
         // Repository를 통해 DB에서 userId를 통해 user 값을 가져온다.
-        Account account = accountRepository.findAccountBySerial(accountSerial);
+        Account accountResult = accountRepository.findAccountBySerial(account);
         // user 존재 여부 확인
-        if(account == null){
+        if(accountResult == null){
             return null;
         }
-        return new PrincipalDetails(account);
+        return new PrincipalDetails(accountResult);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

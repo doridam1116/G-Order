@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Min;
 
 
 @Api(tags = {"상품 API"})
@@ -91,15 +90,28 @@ public class ProductController {
         param :
         int categoryNo
      */
-    @ApiOperation(value = "메뉴 조회")
+//    @ApiOperation(value = "메뉴 조회")
+//    @GetMapping
+//    public ResponseEntity<?> getMenu(
+//          @Min(value = 0, message = "{message.009}")
+//          @RequestParam int categoryNo
+//    ){
+//        return productService.getMenuByCategoryNo(categoryNo);
+//    }
+
     @GetMapping
     public ResponseEntity<?> getMenu(
-          @Min(value = 0, message = "{message.009}")
-          @RequestParam int categoryNo
+            @RequestParam String accountSerial
     ){
-        return productService.getMenuByCategoryNo(categoryNo);
+        return productService.getMenuByAccountSerial(accountSerial);
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<?> getCategory(
+            @RequestParam String accountSerial
+    ){
+        return productService.getCategoryByAccountSerial(accountSerial);
+    }
 
     /*
         param :
@@ -145,5 +157,8 @@ public class ProductController {
     ){
         return productService.deleteCategoryByNo(categoryNo);
     }
+
+
+
 
 }

@@ -4,7 +4,11 @@ import com.gaubiz.gorder.api.account.model.Account;
 import com.gaubiz.gorder.api.account.model.Sub;
 import com.gaubiz.gorder.api.account.repository.AccountRepository;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class AccountRepositoryLogic implements AccountRepository {
@@ -25,8 +29,8 @@ public class AccountRepositoryLogic implements AccountRepository {
     }
 
     @Override
-    public Account findAccountBySerial(String accountSerial) {
-        return session.selectOne("AccountMapper.findAccountBySerial",accountSerial);
+    public Account findAccountBySerial(Account account) {
+        return session.selectOne("AccountMapper.findAccountBySerial",account);
     }
 
     @Override
@@ -52,5 +56,15 @@ public class AccountRepositoryLogic implements AccountRepository {
     @Override
     public int insertAccountBySub(Sub sub) {
         return session.insert("AccountMapper.insertAccountBySub",sub);
+    }
+
+    @Override
+    public List<Sub> readSub(String accountSerial) {
+        return session.selectList("AccountMapper.selectSubByAccountSerial",accountSerial);
+    }
+
+    @Override
+    public int updateSub(Sub sub) {
+        return session.update("AccountMapper.updateSub",sub);
     }
 }

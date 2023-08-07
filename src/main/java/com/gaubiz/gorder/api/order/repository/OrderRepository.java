@@ -2,7 +2,7 @@ package com.gaubiz.gorder.api.order.repository;
 
 import com.gaubiz.gorder.api.order.model.Order;
 import com.gaubiz.gorder.api.order.model.OrderDetail;
-import com.gaubiz.gorder.api.order.model.Sales;
+import com.gaubiz.gorder.api.order.model.OrderList;
 
 import java.util.List;
 
@@ -21,5 +21,17 @@ public interface OrderRepository {
 
     List<OrderDetail> getOrderListByNo(long orderNo);
 
-    List<Sales> getSalesOrder();
+    List<Order> getSalesOrder(String accountSerial);
+
+    List<OrderList> getOrderListBySubSerial(String subSerial);
+
+    Order selectOrderBySubSerial(String subSerial);
+
+    int updateOrderDetail(OrderDetail order);
+
+    void insertAddOrder(OrderDetail orderDetails);
+
+    List<Order> getOrderListByAccountSerial(String accountSerial);
+
+    List<OrderDetail> selectOrderByOrderNo(Long orderNo);
 }

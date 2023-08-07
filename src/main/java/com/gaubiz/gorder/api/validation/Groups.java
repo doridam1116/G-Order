@@ -12,4 +12,5 @@ public class Groups {
     public interface newOrderGroup {};
     public interface modifyOrderGroup {};
     public interface subActiveGroup {};
+    public interface subModifyGroup{};
 }

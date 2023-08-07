@@ -30,7 +30,10 @@ public class ProductServiceLogic implements ProductService {
     @Override
     public ResponseEntity<?> addCategory(Category category) {
         int result = productRepository.addCategory(category);
-        return returnByResult(result);
+        if(result > 0){
+            return ResponseEntity.ok().body(getMessageSource().getMessage("HTTP_OK",null,Locale.getDefault()));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(getMessageSource().getMessage("HTTP_SERVER_ERROR",null,Locale.getDefault()));
     }
 
     @Override
@@ -52,8 +55,8 @@ public class ProductServiceLogic implements ProductService {
     }
 
     @Override
-    public ResponseEntity<?> getMenuByCategoryNo(int categoryNo) {
-        List<Product> productList = productRepository.getMenuByCategoryNo(categoryNo);
+    public ResponseEntity<?> getMenuByAccountSerial(String accountSerial) {
+        List<Product> productList = productRepository.getMenuByAccountSerial(accountSerial);
         if (productList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getMessageSource().getMessage("HTTP_NOT_FOUND",null,Locale.getDefault()));
         } else {
@@ -71,6 +74,15 @@ public class ProductServiceLogic implements ProductService {
     public ResponseEntity<?> deleteCategoryByNo(int categoryNo) {
         int result = productRepository.deleteCategoryByNo(categoryNo);
         return returnByResult(result);
+    }
+
+    @Override
+    public ResponseEntity<?> getCategoryByAccountSerial(String accountSerial) {
+        List<Category> categoryList = productRepository.getCategoryByAccountSerial(accountSerial);
+        if(categoryList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(getMessageSource().getMessage("HTTP_SERVER_ERROR",null,Locale.getDefault()));
+        }
+        return ResponseEntity.ok().body(categoryList);
     }
 
     public ResponseEntity<?> returnByResult(int result){

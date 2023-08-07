@@ -1,6 +1,8 @@
 package com.gaubiz.gorder.api.product.model;
 
 import com.gaubiz.gorder.api.validation.Groups;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -66,4 +68,7 @@ public class Product {
             }
     )
     private Integer categoryNo;
+
+    @ApiModelProperty(value = "카테고리 이름", example = "도토리")
+    private String categoryName;
 }

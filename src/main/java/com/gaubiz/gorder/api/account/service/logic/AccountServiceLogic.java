@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Locale;
 
 import static com.gaubiz.gorder.config.PropertyConfig.getMessageSource;
@@ -31,7 +32,7 @@ public class AccountServiceLogic implements AccountService {
         if (result > 0) {
             // 결과와 시리얼을 같이 리턴
             Account accountSerial = accountRepository.getAccountSerialByTel(account);
-            return ResponseEntity.ok(getMessageSource().getMessage("HTTP_OK", null, Locale.getDefault()) + accountSerial.getAccountSerial());
+            return ResponseEntity.ok().body(getMessageSource().getMessage("HTTP_OK", null, Locale.getDefault()));
         } else {
             // 서버 에러 리턴
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(getMessageSource().getMessage("HTTP_SERVER_ERROR", null, Locale.getDefault()));
@@ -46,7 +47,7 @@ public class AccountServiceLogic implements AccountService {
             Sub subSerial = accountRepository.selectSubSerial(sub);
             result = accountRepository.insertAccountBySub(subSerial);
             if (result > 0) {
-                return ResponseEntity.ok().body(getMessageSource().getMessage("HTTP_OK", null, Locale.getDefault()) + subSerial.getSubSerial());
+                return ResponseEntity.ok().body(getMessageSource().getMessage("HTTP_OK", null, Locale.getDefault()));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(getMessageSource().getMessage("HTTP_SERVER_ERROR", null, Locale.getDefault()));
             }
@@ -72,6 +73,25 @@ public class AccountServiceLogic implements AccountService {
             return ResponseEntity.ok().body(getMessageSource().getMessage("HTTP_OK", null, Locale.getDefault()));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(getMessageSource().getMessage("HTTP_SERVER_ERROR", null, Locale.getDefault()));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> readSub(String accountSerial) {
+        List<Sub> subList = accountRepository.readSub(accountSerial);
+        if(subList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(getMessageSource().getMessage("HTTP_SERVER_ERROR",null,Locale.getDefault()));
+        }
+        return ResponseEntity.ok().body(subList);
+    }
+
+    @Override
+    public ResponseEntity<?> updateSub(Sub sub) {
+        int result = accountRepository.updateSub(sub);
+        if(result > 0){
+            return ResponseEntity.ok().body(getMessageSource().getMessage("HTTP_OK",null,Locale.getDefault()));
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(getMessageSource().getMessage("HTTP_SERVER_ERROR",null,Locale.getDefault()));
         }
     }
 }

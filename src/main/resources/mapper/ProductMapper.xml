@@ -4,11 +4,13 @@
 <mapper namespace="ProductMapper">
 
     <insert id="insertProduct">
-        INSERT INTO PRODUCT_TBL VALUES(DEFAULT, #{productName},#{productDetail}, #{productPrice}, DEFAULT,#{categoryNo})
+        INSERT INTO PRODUCT_TBL
+             VALUES (DEFAULT, #{productName},#{productDetail}, #{productPrice}, DEFAULT,#{categoryNo})
     </insert>
 
     <insert id="insertCategory">
-        INSERT INTO CATEGORY_TBL VALUES(default,#{categoryName},#{accountSerial})
+        INSERT INTO CATEGORY_TBL
+             VALUES (default,#{categoryName},#{accountSerial})
     </insert>
 
     <update id="updateProduct">
@@ -37,13 +39,31 @@
     </update>
 
     <delete id="deleteProductByNo">
-        DELETE FROM PRODUCT_TBL WHERE PRODUCT_NO = #{productNo}
+        DELETE FROM PRODUCT_TBL
+              WHERE PRODUCT_NO = #{productNo}
     </delete>
     <delete id="deleteCategoryByNo">
-        DELETE FROM CATEGORY_TBL WHERE CATEGORY_NO = #{categoryNo}
+        DELETE FROM CATEGORY_TBL
+              WHERE CATEGORY_NO = #{categoryNo}
     </delete>
 
     <select id="selectMenuByCategoryNo" resultType="Product">
-        SELECT * FROM PRODUCT_TBL WHERE CATEGORY_NO = #{categoryNo}
+        SELECT * FROM PRODUCT_TBL
+                WHERE CATEGORY_NO = #{categoryNo}
+    </select>
+
+    <select id="selectMenuByAccountSerial" resultType="Product">
+        SELECT PRO.*, CGT.CATEGORY_NAME
+        FROM   PRODUCT_TBL PRO
+        JOIN   CATEGORY_TBL CGT ON PRO.CATEGORY_NO = CGT.CATEGORY_NO
+        WHERE  PRO.CATEGORY_NO IN ( SELECT CATEGORY_NO
+                                  FROM CATEGORY_TBL
+                                 WHERE ACCOUNT_SERIAL = #{accountSerial}
+                               )
+    </select>
+    <select id="selectCategoryByAccountSerial" resultType="Category">
+        SELECT *
+          FROM CATEGORY_TBL
+         WHERE ACCOUNT_SERIAL = #{accountSerial}
     </select>
 </mapper>
